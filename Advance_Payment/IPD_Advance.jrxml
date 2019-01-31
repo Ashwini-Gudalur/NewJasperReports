@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IPD_Advance" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="de11fdca-8f6b-43f5-ae5d-7e0d518475e7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="from_date" class="java.util.Date"/>
+	<parameter name="to_date" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+    ROW_NUMBER() OVER (ORDER BY rp.ref) as "Sl No",
+    rp.ref,
+    date(so.create_date),
+    rp.name,
+    so.name as "SO-Number",ppp.name_template as item,
+    (case when rpa."x_Is_Tribal" = 'False' then 'NT'
+     else 'T' END) as Caste,
+    sum(av.amount) as "Collected"
+  FROM sale_order so
+  LEFT JOIN account_invoice ai on so.name = ai.origin
+  LEFT JOIN account_voucher av on av.invoice_id = ai.id
+  LEFT JOIN res_partner_attributes rpa on rpa.partner_id=so.partner_id
+  LEFT JOIN claim_type ct on ct.erp_patient_id = so.partner_id
+  LEFT JOIN res_partner rp on rp.id = so.partner_id
+  LEFT JOIN sale_order_line soll on soll.order_id = so.id
+  LEFT JOIN product_product ppp on ppp.id = soll.product_id
+  WHERE so.id in (SELECT distinct(sol.order_id) FROM sale_order_line sol
+  WHERE product_id IN(SELECT pp.id FROM product_product pp
+  INNER JOIN product_template pt ON pp.product_tmpl_id = pt.id
+  and pt.id = 3040))
+  AND cast(av.date_string as date) BETWEEN $P{from_date} AND $P{to_date}
+  GROUP by ct.claim_type,rpa."x_Is_Tribal",ai.state,rp.ref,so.dispensed_location,
+  so.create_date,rp.name,so.name,ppp.name_template]]>
+	</queryString>
+	<field name="Sl No" class="java.lang.Long"/>
+	<field name="ref" class="java.lang.String">
+		<fieldDescription><![CDATA[Ref.]]></fieldDescription>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<fieldDescription><![CDATA[Date End]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String"/>
+	<field name="SO-Number" class="java.lang.String"/>
+	<field name="item" class="java.lang.String"/>
+	<field name="caste" class="java.lang.String"/>
+	<field name="Collected" class="java.lang.String"/>
+	<variable name="TotalCollection" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{Collected}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="8" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="555" height="29" uuid="e3fd264e-2283-410a-9924-1b4da35abad2"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Advance Payment Details]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="33" width="30" height="18" uuid="fc8f84d6-29fd-44a3-a44f-d39258c001e7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[from]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="203" y="33" width="80" height="18" uuid="d83a2131-f3c7-44be-a789-19a54746a1bb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{from_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="304" y="33" width="80" height="18" uuid="2fb57155-0193-4b0a-8d62-2221fb95118b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{to_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="283" y="33" width="20" height="18" uuid="95e9ff5e-d670-43a8-8390-b576d98716e1"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[to]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="493" y="8" width="62" height="20" uuid="13c29767-3ad1-452e-aead-b56e1e8d1c34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="8" width="84" height="20" uuid="4134df34-3243-49e0-9875-09df0f062148"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[SO-Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="8" width="98" height="20" uuid="28923c26-559f-43b9-9255-731f45964b15">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Ledger]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="8" width="58" height="20" uuid="397cfdb7-86b6-47ef-9f4e-6abf9cbd27fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="8" width="42" height="20" uuid="3e9140a1-d20a-41ff-851d-6fbb31213e00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Caste]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="8" width="87" height="20" uuid="e27251e2-b624-433e-bfe3-7bd093c4e21e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Identifier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="8" width="38" height="20" uuid="8d07c242-8bca-4f00-86a9-c15fcbaed030">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[SlNo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="270" y="6" width="109" height="30" uuid="061c7e30-c425-455d-9f49-ac1a92e98917">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="144" y="6" width="32" height="30" uuid="8c23d1fd-443c-4919-8e17-b286b29e9432">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caste}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="493" y="6" width="59" height="30" uuid="5cbc72d0-2c0b-4fd6-9afe-859e4ca5685b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Collected}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="6" width="84" height="30" uuid="98d43bfe-67c5-4053-919a-276ca7973e0d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SO-Number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="6" width="91" height="30" uuid="a91283cb-f149-4719-afe0-e3963f154c5d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="6" width="99" height="30" uuid="ec463d3f-2c0f-4097-99b9-e5b0b168402f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ref}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="6" width="38" height="30" uuid="79cfd2fa-b53c-4002-911b-8d57f911a97a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Sl No}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-3" y="1" width="560" height="1" uuid="7bc366c5-077b-4295-8c86-5657000be385"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
