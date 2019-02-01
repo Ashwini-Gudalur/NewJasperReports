@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IPD_Advance" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="de11fdca-8f6b-43f5-ae5d-7e0d518475e7">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="523"/>
+	<property name="ireport.y" value="68"/>
 	<parameter name="from_date" class="java.util.Date"/>
 	<parameter name="to_date" class="java.util.Date"/>
 	<queryString>
@@ -42,8 +42,8 @@
 	<field name="SO-Number" class="java.lang.String"/>
 	<field name="item" class="java.lang.String"/>
 	<field name="caste" class="java.lang.String"/>
-	<field name="Collected" class="java.lang.String"/>
-	<variable name="TotalCollection" class="java.lang.String" calculation="Sum">
+	<field name="Collected" class="java.lang.Double"/>
+	<variable name="CollectTotal" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{Collected}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
@@ -93,18 +93,18 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="28" splitType="Stretch">
+		<band height="33" splitType="Stretch">
 			<staticText>
 				<reportElement x="493" y="8" width="62" height="20" uuid="13c29767-3ad1-452e-aead-b56e1e8d1c34"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Amount]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="396" y="8" width="84" height="20" uuid="4134df34-3243-49e0-9875-09df0f062148"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[SO-Number]]></text>
 			</staticText>
@@ -113,21 +113,21 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Ledger]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="192" y="8" width="58" height="20" uuid="397cfdb7-86b6-47ef-9f4e-6abf9cbd27fb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="137" y="8" width="42" height="20" uuid="3e9140a1-d20a-41ff-851d-6fbb31213e00"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Caste]]></text>
 			</staticText>
@@ -136,7 +136,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Identifier]]></text>
 			</staticText>
@@ -145,16 +145,19 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[SlNo]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="28" width="551" height="1" uuid="98743a7c-6f04-4b7a-b514-ecd80a9e73bd"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="36" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="270" y="6" width="109" height="30" uuid="061c7e30-c425-455d-9f49-ac1a92e98917">
+				<reportElement x="270" y="0" width="109" height="19" uuid="061c7e30-c425-455d-9f49-ac1a92e98917">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -164,25 +167,7 @@
 				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="144" y="6" width="32" height="30" uuid="8c23d1fd-443c-4919-8e17-b286b29e9432">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{caste}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="493" y="6" width="59" height="30" uuid="5cbc72d0-2c0b-4fd6-9afe-859e4ca5685b">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Collected}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="396" y="6" width="84" height="30" uuid="98d43bfe-67c5-4053-919a-276ca7973e0d">
+				<reportElement x="396" y="0" width="84" height="19" uuid="98d43bfe-67c5-4053-919a-276ca7973e0d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -191,7 +176,7 @@
 				<textFieldExpression><![CDATA[$F{SO-Number}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="179" y="6" width="91" height="30" uuid="a91283cb-f149-4719-afe0-e3963f154c5d">
+				<reportElement x="179" y="0" width="91" height="19" uuid="a91283cb-f149-4719-afe0-e3963f154c5d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -200,7 +185,25 @@
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="38" y="6" width="99" height="30" uuid="ec463d3f-2c0f-4097-99b9-e5b0b168402f">
+				<reportElement x="0" y="0" width="38" height="19" uuid="79cfd2fa-b53c-4002-911b-8d57f911a97a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Sl No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="32" height="19" uuid="8c23d1fd-443c-4919-8e17-b286b29e9432">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caste}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="0" width="99" height="19" uuid="ec463d3f-2c0f-4097-99b9-e5b0b168402f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -209,18 +212,37 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ref}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="6" width="38" height="30" uuid="79cfd2fa-b53c-4002-911b-8d57f911a97a">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="482" y="0" width="73" height="20" uuid="4fafd0ee-23bd-4fca-932a-e34a72ed4096"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Sl No}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Collected}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="-3" y="1" width="560" height="1" uuid="7bc366c5-077b-4295-8c86-5657000be385"/>
-			</line>
 		</band>
 	</detail>
+	<summary>
+		<band height="41">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="482" y="10" width="73" height="20" uuid="d3e66c73-7af3-4be4-a63b-75f8ca6254a1"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{CollectTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="431" y="10" width="48" height="20" uuid="9f715bab-bc07-45d6-9af8-5e890ab3341f"/>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="431" y="5" width="124" height="1" uuid="12463e20-8b20-4143-8b5c-c7bc15c7d62d"/>
+			</line>
+			<line>
+				<reportElement x="431" y="33" width="124" height="1" uuid="39328f9e-ce99-43dd-9ef2-cf312979183f"/>
+			</line>
+		</band>
+	</summary>
 </jasperReport>
