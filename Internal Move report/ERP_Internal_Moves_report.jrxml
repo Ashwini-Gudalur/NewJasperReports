@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ERP_Internal_Moves" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="816b3381-9dde-4fe5-8d4d-d50dfc3bc681">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="203"/>
+	<property name="ireport.y" value="144"/>
+	<parameter name="Internal_move_number" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ROW_NUMBER() OVER (ORDER BY sm.create_date) as "Sl No",
+		sp.name as Inv_No,
+		sm.name as Product,
+		pc.name as "Product category",
+		spl.name as Batch,
+		cast(spl.life_date as date) as Expiry_date,
+		sm.product_qty as Quantity,
+		spl.mrp as MRP,
+		cast((spl.mrp*sm.product_qty)as DECIMAL (10,2)) as "MRP Value",
+		spl.cost_price as CP,
+		cast((spl.cost_price*sm.product_qty)as DECIMAL (10,2)) as "CP Value",
+		spl.sale_price as SP,
+		cast((spl.sale_price*sm.product_qty)as DECIMAL(10,2)) as "SP Value",
+		cast(sm.create_date as date),sl.name as Location,sll.name as "Source Location"
+  FROM stock_move sm
+	   INNER JOIN stock_location sl on sl.id = sm.location_dest_id
+	   INNER JOIN stock_location sll on sll.id = sm.location_id
+	   INNER JOIN stock_production_lot spl on spl.id = sm.prodlot_id
+	   INNER JOIN product_template pt ON pt.id = sm.product_id
+	   INNER JOIN product_category pc on pc.id = pt.categ_id
+	   INNER JOIN stock_picking sp on sp.id = sm.picking_id
+	      WHERE sp.name = $P{Internal_move_number}
+	           ORDER BY sm.create_date Asc]]>
+	</queryString>
+	<field name="Sl No" class="java.lang.Long"/>
+	<field name="inv_no" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="Product category" class="java.lang.String"/>
+	<field name="batch" class="java.lang.String"/>
+	<field name="expiry_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[Expiry Date]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="mrp" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[MRP]]></fieldDescription>
+	</field>
+	<field name="MRP Value" class="java.math.BigDecimal"/>
+	<field name="cp" class="java.math.BigDecimal"/>
+	<field name="CP Value" class="java.math.BigDecimal"/>
+	<field name="sp" class="java.math.BigDecimal"/>
+	<field name="SP Value" class="java.math.BigDecimal"/>
+	<field name="create_date" class="java.sql.Date"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="Source Location" class="java.lang.String"/>
+	<variable name="Aggregate_CP" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{CP Value}]]></variableExpression>
+	</variable>
+	<variable name="Aggregate_SP" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{SP Value}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="118" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="247" height="19" uuid="a936421b-8ae6-4146-a371-25bd853866ef"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gudalur Adivasi Hospital
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="19" width="247" height="31" uuid="f9c56a02-0676-4cf4-8226-2bc453d356a4"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ASHWINI, Post Box No.20,
+Gudalur, The Nilgiris District - 643 212
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="50" width="190" height="34" uuid="56023a89-ca32-4fc8-9f99-7319bc2445c6"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Phone: +91-4262-261645
+Mail: ashwinigudalur@gmail.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="96" width="114" height="20" uuid="65ec9d25-bdc3-42b4-9705-90a74b0f5561"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Internal Shipment :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="96" width="98" height="20" uuid="42b38be6-5c62-4e72-8e48-9eb917d3782b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_no}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="83" width="211" height="1" uuid="5237b6f9-3e38-4cd7-bc44-747f15a3f853"/>
+			</line>
+			<staticText>
+				<reportElement x="266" y="96" width="143" height="20" uuid="90abf697-3cf9-4aca-bd2a-233df573e19e"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Destination Location :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="96" width="141" height="20" uuid="ec715698-8abc-4bbe-9375-4af1d50b1d1e"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="266" y="76" width="143" height="20" uuid="6a9ab08d-9ed5-4e1c-86d7-eb2f86a862db"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Source Location :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="76" width="141" height="20" uuid="0b7b10d3-2395-4643-934b-028f0f63430b"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Source Location}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="266" y="56" width="143" height="20" uuid="d65dedbb-58f9-428c-8e66-012b96672814"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="412" y="56" width="141" height="20" uuid="7be7f147-5159-4425-9773-7c974c97cb6b"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{create_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="-13" y="2" width="31" height="20" uuid="7029285b-6f20-4c32-897a-64d3cdba2816"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="3" width="70" height="20" uuid="07afaba4-f238-4de6-9ff3-48d4fb9121c7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Batch]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="3" width="64" height="20" uuid="217ddf87-4f5f-4cce-9112-109d8e69b78f"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expiry Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="3" width="53" height="20" uuid="46ddd4c3-9539-4650-867e-3d9e9ae52577"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="3" width="25" height="20" uuid="9369de71-66c8-412c-b958-651feb671130"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="3" width="29" height="20" uuid="8573e292-57b2-42f4-aafb-766fca0e634e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="407" y="3" width="53" height="20" uuid="84ea7c3a-cd7f-4abe-b73f-108398ff3bdb"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CP Value]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="3" width="54" height="20" uuid="874de7ef-1b2e-44af-9fdd-d94c356f344c"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SP Value]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="3" width="139" height="20" uuid="edec492a-1515-4a11-a545-28cd83b36d2f"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Product]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-12" y="23" width="562" height="1" uuid="9b7de4af-6b57-4ef7-b940-71cbfd6dd052"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="-7" y="1" width="26" height="18" uuid="19c8f569-eeb0-4fb9-9425-9669c31c55a9"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Sl No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="22" y="1" width="139" height="18" uuid="7d8abf97-f3d8-4e65-a8c3-3f8c0b64d10e"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="163" y="1" width="70" height="18" uuid="347860b8-21d6-4fec-ac2e-1e304a4c113d"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{batch}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="233" y="1" width="74" height="18" uuid="2b606baf-a045-466b-953e-bfc6622599bb"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{expiry_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="307" y="1" width="64" height="18" uuid="cebed0ab-4017-4a6e-ba4c-fc63a25a2c58"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="371" y="1" width="39" height="18" uuid="a5368988-26b5-4331-84ec-98b01201eec9"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="1" width="52" height="18" uuid="cbe4160c-7274-4424-b067-28fe3ccdb600"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CP Value}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="464" y="1" width="39" height="18" uuid="6572badb-e299-4bf6-b0fb-730bb8696d1c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="503" y="1" width="52" height="18" uuid="d8935e6b-6cb8-41dc-b7be-059c3d57d5cc"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SP Value}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="97" splitType="Stretch">
+			<staticText>
+				<reportElement x="328" y="10" width="120" height="24" uuid="0ef326b4-bdd3-4af2-aebe-1a81da997ada"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ Cost price total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="461" y="10" width="80" height="24" uuid="cc4e70e7-5a3e-4947-a6cb-ea88a3a0aae6"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Aggregate_CP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="34" width="79" height="24" uuid="8bc2c132-28a1-4826-b2b2-b07f9cea641c"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Aggregate_SP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="328" y="38" width="120" height="24" uuid="b733fea9-9604-441f-8019-2ea6aef1d8ec"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ Sale price total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="311" y="3" width="244" height="1" uuid="2501133f-469f-4588-ac1a-f9e2697204c3"/>
+			</line>
+			<line>
+				<reportElement x="311" y="65" width="244" height="1" uuid="b48e94a9-3004-4a8e-aea5-be577f9dc2dc"/>
+			</line>
+			<staticText>
+				<reportElement x="6" y="14" width="304" height="24" uuid="99e7fc83-f716-4481-869c-8390cf841931"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Stock taken by _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="68" width="284" height="24" uuid="407c9810-3843-45f2-8604-3c7f1061b3a7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Store manager Signature_ _ _ _ _ _ _ _ _ _ _ _ _ _ _]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="41" width="304" height="24" uuid="6115c3de-2ada-437d-b143-ab22175c2b33"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Validated by _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="555" height="34" uuid="0c4266bc-b19e-415f-a3a5-b5233d24de2b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Phone: +91-4262-261645 | Email: ashwinigudalur@gmail.com | Website: ashwini.org]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="4" width="543" height="1" uuid="4a178b2e-7a16-4ad3-9223-c7de2c11b880"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
