@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sicklecellpatients_department_wise_revenue" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08da130f-c2ba-41a3-abef-7b2babca9205">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="6"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="to_date" class="java.util.Date"/>
+	<parameter name="from_date" class="java.util.Date"/>
+	<queryString language="bahmniReport">
+		<![CDATA[org.bahmni.custom.reports.SickleCellPatientsDepartmentwiseCollection]]>
+	</queryString>
+	<field name="billAmountTribal" class="java.lang.Double"/>
+	<field name="paidAmountTribal" class="java.lang.Double"/>
+	<field name="refundAmountTribal" class="java.lang.Double"/>
+	<field name="totalCharityTribal" class="java.lang.Double"/>
+	<field name="department" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="billAmountNonTribal" class="java.lang.Double"/>
+	<field name="paidAmountNonTribal" class="java.lang.Double"/>
+	<field name="refundAmountNonTribal" class="java.lang.Double"/>
+	<field name="totalCharityNonTribal" class="java.lang.Double"/>
+	<field name="billTotal" class="java.lang.Double"/>
+	<field name="charityTotal" class="java.lang.Double"/>
+	<field name="collectedTotal" class="java.lang.Double"/>
+	<field name="refundTotal" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="92" y="2" width="333" height="30" uuid="95a58bb5-3903-4356-a9a9-752761722d83"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sickle Cell Patients' Department Wise Revenue Collection Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="31" width="30" height="18" uuid="cec0039e-dcfe-4605-87c2-0d33b426de95"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[from]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="31" width="20" height="18" uuid="1fca7d37-64f6-41b7-bf21-be9b7b19d4b0"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[to]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="283" y="33" width="80" height="18" uuid="433ffb52-d3b6-4ee2-889c-ed3dac46b49d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{to_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="182" y="33" width="80" height="18" uuid="f6b45c22-ba13-4522-99cb-abf527b2815d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{from_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="144" splitType="Stretch">
+			<staticText>
+				<reportElement x="133" y="32" width="80" height="20" uuid="5ed571ac-eb39-4732-abee-2ac193e8f771">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Collected]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="32" width="80" height="18" uuid="ca635f9e-c0f8-425d-80c0-1046fe3ae8ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Charity]]></text>
+			</staticText>
+			<line>
+				<reportElement x="85" y="52" width="358" height="1" uuid="b950f0b9-b870-46c5-b772-8444b2a42151"/>
+			</line>
+			<staticText>
+				<reportElement x="363" y="31" width="80" height="19" uuid="75f88e0c-a945-408f-8aea-86e9215b533a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Refund]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="80" height="19" uuid="7db81bd0-1ecf-46ae-9a59-07d49051aa8e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tribal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="80" height="19" uuid="8fe62822-0717-4740-b237-54e778adf133"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Non Tribal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="106" width="80" height="19" uuid="c897aaa0-6ff6-454d-b3a7-6f035f86226c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="85" y="102" width="359" height="1" uuid="7d64fa62-5c22-4fd9-a43e-ca4733d1febf"/>
+			</line>
+			<line>
+				<reportElement x="86" y="125" width="359" height="1" uuid="2a2f5a41-283a-452a-8455-b9d7d6fdf485"/>
+			</line>
+			<line>
+				<reportElement x="1" y="4" width="549" height="1" uuid="ab2feac2-4164-44f4-8627-0e7a168a6b3c"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="10" width="210" height="21" uuid="d6d5b849-5549-41a4-92ce-ef180edfaea1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="104" width="80" height="19" uuid="adebad01-15c4-4739-bffe-b84d10d21a06"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{charityTotal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="104" width="80" height="19" uuid="31a2cb42-bca0-4bdd-9a74-3ef87b339456"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{collectedTotal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="363" y="104" width="80" height="19" uuid="45f68081-701b-45cb-9408-ff1228bff07b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{refundTotal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="55" width="80" height="19" uuid="a637ee53-c4a6-4a78-9cc6-9b3e96ebc4a4">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{paidAmountTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="363" y="55" width="80" height="19" uuid="b96008b3-c4d9-49b2-a1a0-4ce4a3b46a22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{refundAmountTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="248" y="55" width="80" height="19" uuid="0a818494-6ab9-4c43-af09-f47dd9256955"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{totalCharityTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="80" width="80" height="19" uuid="bb0120ed-5c08-498e-963c-4b56a3c3580f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{paidAmountNonTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="363" y="80" width="80" height="19" uuid="2657bc3c-8400-4108-9496-9adbc5124cc6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{refundAmountNonTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="80" width="80" height="19" uuid="e608eed8-3a2f-46ca-bab7-e478737dba81"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[BigDecimal.valueOf($F{totalCharityNonTribal}).setScale( 2, java.math.RoundingMode. HALF_UP)+""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="4" y="130" width="549" height="1" uuid="6414c9d3-554c-4510-b07c-46e8736e7ffc"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
